@@ -1,0 +1,9 @@
+<h1>hello world!</h1>
+<p>this is webpage</p>
+<p>My name is {{first_name|capitalize}}</p>
+<p>{{stuff|safe}}</p>
+<h3>Fav pizza:</h3>
+
+{% for topping in favorite_pizza%}
+    {{ topping }}
+{% endfor %}

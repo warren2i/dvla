@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DVLA API PARTIAL REG SEARCH</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+    <link rel="preload" href="CharlesWright-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  </head>
+  <body>
+    
+  <section class="section">
+    <div class="container">
+      <h1 class="title is-1">
+        DVLA API PARTIAL REG SEARCH
+      </h1>
+      <h4 class="subtitle is-4">
+        <strong>Enter reg number, replace unsure digits with !</strong>!
+      </h4>
+      
+      
+    
+        
+        <div class="box">
+                <input class="input is-large" type="text" placeholder="ENTER REG NO HERE" id="dropdownID">
+              Replace unsure characters with !
+        </br>
+<input type="button"  onclick="location.href='/find/'+document.getElementById('dropdownID').value" value="Search for plate" />     
+</br>
+
+
+{% for reg in regarray%}
+        <div class="box">
+          
+          <div class="boxdiv"><h1 class="title is-1">{{ reg.registrationNumber }}</h1></div>
+          <img src="\static\svgs\{{ reg.make }}.svg" alt="{{ reg.make }}">
+            Colour: {{ reg.colour }}<br/>
+            Manufacture: {{ reg.make }}<br/>
+            Year of Manufacture: {{ reg.year }}<br/>
+            <br><br/>
+            
+            
+        </div>
+    {% endfor %}
+
+ 
+</div>
+        
+
+      
+      
+    
+
+
+    </div>
+  </section>
+  </body>
+</html>
