@@ -48,7 +48,7 @@
 {% for reg in regarray%}
     <div class="box">
       <div class="boxdiv"><h1 class="title is-1">{{ reg.registrationNumber }}</h1></div>
-      <img src="\static\{{ reg.make }}.svg" alt="{{ reg.make }}">
+      <img src="\static\{{ reg.make|lower }}.svg" alt="{{ reg.make }}">
         <p>Colour: {{ reg.colour }}<br/>
         Manufacture: {{ reg.make }}<br/>
         Year of Manufacture: {{ reg.year }}<br/>
