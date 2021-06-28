@@ -1,0 +1,88 @@
+
+    <script>
+      function trim(s){ 
+        return ( s || '' ).replace( '[', '' ); 
+        }
+      function trimer(r){ 
+        return ( r || '' ).replace( ']', '' ); 
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/test', true);
+        xhr.onreadystatechange = function(e) {
+            var div = document.createElement('div');
+            resonnn = trim(this.response)
+            resonnn = trimer(resonnn)
+          
+            const myJSON = JSON.stringify(resonnn);
+            console.log(myJSON[1])
+            div.innerHTML = this.responseText;
+            document.body.appendChild(div);
+        };
+        xhr.send();
+
+        
+</script>
+
+<!DOCTYPE html>
+<html>
+  <head>
+  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DVLA API PARTIAL REG SEARCH</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+    <link rel="preload" href="CharlesWright-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  </head>
+  <body>
+    <section class="section">
+        <div class="container">
+          <h1 class="title is-1">
+            DVLA API PARTIAL REG SEARCH
+          </h1>
+          <h4 class="subtitle is-4">
+            
+            
+          </h4>
+
+          <div class="box">
+            <img src="\static\Three_Parts_to_a_Number_Plate.png" alt="current style registrationNumber">
+            This tool allows for wildcard searches of DVLA registered vehicles. Replace the character you would like to wild card search with ! In the box below. You can use the wild card twice in each search. For example search SJ62!F! To yield a result containing SJ62HFB. Please note this search currently only works with current style plates as found in the picture above.
+          </br>Searches with one wildcard take around 5 seconds, 2 wildcards can take up to 60 seconds. Please allow the page to load before exit.
+        </p>
+    </br>
+            <div class="container">
+                <form action="/find" method="POST">
+                  <div class="form-group">
+                  <input class="input is-large" type="text" placeholder ="Enter reg number" name="num1" required minlength="7" maxlength="7"></br>
+                  <div id="welcomeDiv"  style="display:none;" class="answer_list" >
+                
+                    <progress class="progress is-small is-primary" max="100">15%</progress>
+                </div>  
+            </br>
+                  <input type="submit" value="Search" id="calc_btn" class="btn" onclick="showDiv()"  />
+                  </div>    
+        </br>
+
+     
+      <script>function showDiv() {
+        document.getElementById('welcomeDiv').style.display = "block";
+     }
+     
+     </script>
+
+{% for reg in regarray%}
+    <div class="box">
+      <div class="boxdiv"><h1 class="title is-1">{{ reg.registrationNumber }}</h1></div>
+      <img src="\static\{{ reg.make|lower }}.svg" alt="{{ reg.make }}">
+        <p>Colour: {{ reg.colour }}<br/>
+        Manufacture: {{ reg.make }}<br/>
+        Year of Manufacture: {{ reg.year }}<br/>
+        Tax Status: {{reg.taxed}}<br/>
+        mot: {{reg.mot}}<br/>
+    </p>
+    </div>
+{% endfor %}
+<img src="\static\injury-lawyers-4-u.png" alt="ij4u}">
+
+
+</div>

@@ -1,0 +1,27 @@
+<div id="pasta-results">Please wait, loading...</div>
+
+<script>
+    function loadPasta() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("pasta-results").innerHTML = this.responseText;
+        }
+      };
+      xhttp.open("GET", "http://website-host/pasta", true);
+      xhttp.send();
+    }
+
+    function loadCooking() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          loadPasta();
+        }
+      };
+      xhttp.open("GET", "http://website-host/cooking", true);
+      xhttp.send();
+    }
+
+    loadCooking();
+</script>
