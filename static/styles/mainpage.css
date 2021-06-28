@@ -11,7 +11,7 @@
 
 .boxdiv {
   background-color: rgb(223, 194, 30);
-  width: fit-content;
+  /*width: fit-content;*/
   font-family: 'Charles Wright';
   font-weight: bold;
   font-style: normal;
@@ -503,7 +503,7 @@ table th {
   display: block;
   padding: 1.25rem;
   width: 100%;
-  max-width: 300px;
+  max-width: 350px;
   margin: auto;
 }
 

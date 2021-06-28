@@ -1,48 +1,97 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-  <head>
-  
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>DVLA API PARTIAL REG SEARCH</title>
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
     <link rel="preload" href="CharlesWright-Bold.woff2" as="font" type="font/woff2" crossorigin>
-  </head>
-  <body>
-    
-  <section class="section">
-    <div class="container">
-      <h1 class="title is-1">
-        DVLA API PARTIAL REG SEARCH
-      </h1>
-      <h4 class="subtitle is-4">
-        <strong>All possibile combinations found in DVLA database</strong>!
-      </h4>
-      
-      
-      
-      
-    
-      
-        {% for reg in regarray%}
-        <div class="box">
-          
-          <div class="boxdiv"><h1 class="title is-1">{{ reg.registrationNumber }}</h1></div>
-          <img src="\static\svgs\{{ reg.make }}.svg" alt="{{ reg.make }}">
-            Colour: {{ reg.colour }}<br/>
-            Manufacture: {{ reg.make }}<br/>
-            Year of Manufacture: {{ reg.year }}<br/>
-            <br><br/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function(){
+        
+        var socket = io();
+        socket.on('my response', function(msg) {
+            for (let i = 0; i < msg.data.length; i++) {
+                console.log(msg.data[i])
+                arrrr=msg.data[i]
+                make=arrrr.make
+                registrationNumber=arrrr.registrationNumber
+                year=arrrr.year
+                colour=arrrr.colour
+                $('#log').append(
+                    '<div class="box">'+
+                    '<p>' + 
+                    '<div class="boxdiv"><h1 class="title is-1">'+registrationNumber+'</h1></div>' + 
+                    '<img src="/static/'+make+'.svg" alt="'+make+'">'+
+                    'Year: '+
+                    year +
+                    '</br>'+
+                    'colour: ' + 
+                    colour +
+                    '</p>'+
+                    '</div>'
+                    );
+                }
             
             
-        </div>
-    {% endfor %}
-      
-      
+            
+        });
+        $('form#emit').submit(function(event) {
+            socket.emit('my event', {data: $('#emit_data').val()});
+            return false;
+        });
+    });
+</script>
+</head>
+<body>
+    
     
 
-
+    <section class="section">
+        <div class="container">
+          <h1 class="title is-1">
+            DVLA API PARTIAL REG SEARCH
+          </h1>
+          <h4 class="subtitle is-4">
+            
+            
+          </h4>
+    
+          <div class="box">
+            <img src="\static\Three_Parts_to_a_Number_Plate.png" alt="current style registrationNumber">
+            This tool allows for wildcard searches of DVLA registered vehicles. Replace the character you would like to wild card search with ? In the box below. You can use the wild card twice in each search. For example search SJ62?F? To yield a result containing SJ62HFB. Please note this search currently only works with current style plates as found in the picture above.
+          </br>Searches with one wildcard take around 5 seconds, 2 wildcards can take up to 60 seconds. Please allow the page to load before exit.
+        </p>
+    </br>
+            <div class="container">
+                    <form id="emit" method="POST" action='#'>
+                        <input class="input is-large" type="text" name="emit_data" id="emit_data" placeholder="Enter reg number" required minlength="7" maxlength="7">
+                        <input type="submit" value="Search" class="btn">
+                    </form>
+                  
+                  <div id="welcomeDiv"  style="display:none;" class="answer_list" >
+                
+                   
+                </div>  
+            </br>
+                
+                  </div>    
+        </br>
+    
+    
+    
+        <div id="log"></div>
+       
+    </p>
+    
+    
+    <img src="\static\injury-lawyers-4-u.png" alt="ij4u}">
+    
+    
     </div>
-  </section>
-  </body>
+
+
+</body>
 </html>

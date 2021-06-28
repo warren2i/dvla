@@ -1,30 +1,27 @@
-from flask import Flask, Flask, render_template, Response, request, redirect, url_for
-import numpy as np
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
 from itertools import product
+import numpy as np
 import requests
-from itertools import chain
 import math
 import time
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
 @app.route('/')
-def main():
-    return render_template("app.html")
+def index():
+    return render_template('index.html')
 
-
-@app.route("/find", methods=['POST'])
-def calculate():
-    reg = request.form['num1']
-
-    #result = float(num1)
-    plate= reg
-    print(plate)
-    regno=plate
+@socketio.on('my event')
+def test_message(message):
+    
+    print(message)
     print(time.perf_counter())
     file1 = open("numberplates1.txt","w")
-    regno=plate
-    count=regno.count('!')
+    regno=message['data']
+    count=regno.count('?')
     regnolen = len(regno)
     alpha = "A","B","C","D","E","F","G","H","J","K","M","N","O","P","R","S","T","U","V","W","X","Y","Z"
     numbero = "0","1","2","3","4","5","6","7","8","9",
@@ -36,7 +33,7 @@ def calculate():
     listreg = list(regno)
     a = np.array(listreg),(listreg)
     arr=[]
-    unsurepos = ([pos for pos, char in enumerate(regno) if char =='!'])
+    unsurepos = ([pos for pos, char in enumerate(regno) if char =='?'])
     comb = product((alpha),repeat = count)
 
     for b in unsurepos:
@@ -74,6 +71,7 @@ def calculate():
             a[e][g] = arr[e][f]
 
     for b in range(arrlen):
+        
         print(time.perf_counter())
         regnofin = ((a[b][0])+(a[b][1])+(a[b][2])+(a[b][3])+(a[b][4])+(a[b][5])+(a[b][6]))
         #print(regnofin)
@@ -89,27 +87,36 @@ def calculate():
         response = requests.request("POST", url, headers=headers, data=payload)
         data = response.json()
         if response.status_code == 200:
-            print(data)
             reg = {
                 'registrationNumber': data['registrationNumber'],
                 'make': data['make'],
                 'colour': data['colour'],
-                'year': data['yearOfManufacture'],
-                'taxed': data['taxStatus'],
-                #'mot' : data['motExpiryDate']
+                'year': data['yearOfManufacture']
             }
             regarray.insert(b,reg)
             str1=(data['registrationNumber'])
             str2=(data['make'])
             str3=(data['colour'])
             dom = str((data['yearOfManufacture']))
-            print(reg)
-            
+            #print(reg)
+            #print(regnp)
             file1.write((str1) + "\n" + (str2) + "\n" + (str3) + "\n" + (dom) + "\n" + "\n" + "\n")
-    print(time.perf_counter())
-    file1.close()
+            
     print(regarray)
-
-    return render_template('app.html', regarray=regarray, percentage=percentage)
+    emit('my response', {'data': regarray})
+    print(time.perf_counter())
+    
+    file1.close()
     
 
+@socketio.on('my broadcast event')
+def test_message(message):
+    emit('my response', {'data': message['data']}, broadcast=True)
+
+
+@socketio.on('disconnect')
+def test_disconnect():
+    print('Client disconnected')
+
+if __name__ == '__main__':
+    socketio.run(app)
