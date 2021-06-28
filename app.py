@@ -119,4 +119,4 @@ def test_disconnect():
     print('Client disconnected')
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host='http://mysterious-river-77111.herokuapp.com/', port='23089')
