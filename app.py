@@ -1,10 +1,13 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+import socketio
 from itertools import product
 import numpy as np
 import requests
 import math
 import time
+
+sio = socketio.Server()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -119,4 +122,4 @@ def test_disconnect():
     print('Client disconnected')
 
 if __name__ == '__main__':
-    socketio.run(app, port='5000')
+    socketio.run(app)
