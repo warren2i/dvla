@@ -1,6 +1,6 @@
 $(document).ready(function(){
     //connect to the socket server.
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+    var socket = io.connect('https://' + 'mysterious-river-77111.herokuapp.com' + ':' + location.port + '/test');
     var numbers_received = [];
 
     //receive details from server
